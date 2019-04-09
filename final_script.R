@@ -92,7 +92,8 @@ table(data_ord[D1_positive$index,1])
 
 #MDS
 ###########
-distances <- dist(data_ord) #using euclidean distance, skus minkowski = to iste kvoli ordinalnym datam
+distances <- dist(data_ord) #using euclidean distance, does not matter which distance is used
+
 library(smacof)
 mds_results <- smacof::mds(delta = distances, ndim = 2, type = "ordinal",verbose = TRUE)
 final <- add_vars(final,data)
@@ -103,10 +104,10 @@ final %>%
 
 final %>% 
   filter(age > 30,hand != '0') %>%
-  ggplot(aes(x=D1,y=D2,color = engnat)) + geom_point() #tuto staci pomenit parametre... data su nachystane
+  ggplot(aes(x=D1,y=D2,color = engnat)) + geom_point() #parameters can be changed... data are prepared
 
-#tu je zaujimave ze mladsi su skor na okrajoch, pripadne v lavej casti
-#country neukazuje nic extra
+#interesting is that younger ones are more on the borders, or in the left side
+#country does not show anything extra
 final%>%
   filter(age < 100,hand != '0',D1 > 1) -> D1_final_positive
 final%>%
