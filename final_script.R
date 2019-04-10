@@ -59,7 +59,7 @@ pca_toplot %>%
 pca_toplot %>% 
   filter(age < 100,hand != '0') %>%
   ggplot(aes(x = D1, y = D2)) + facet_wrap( ~ race, ncol = 4) + geom_point()
-pca_toplot %>% ggplot(aes(x = D1,color = decision)) + geom_density()
+#pca_toplot %>% ggplot(aes(x = D1,color = decision)) + geom_density()
 
 #comparison in x-axiss (princals)
 pca_toplot%>%
@@ -67,7 +67,7 @@ pca_toplot%>%
 pca_toplot%>%
   filter(age < 100,hand != '0',D1 < 0) -> D1_negative
 
-table(data_ord[D1_negative$index,])
+table(data_ord[D1_negative$index,1])
 table(data_ord[D1_positive$index,1])
 
 #comparison in x-axiss (poly)
@@ -80,14 +80,8 @@ pca2 %>%
   filter(age < 100,hand != '0') %>%
   ggplot(aes(x=D1,y=D2,alpha = age, shape = hand, color = race)) + geom_point()
 
-table(data_ord[D1_negative$index,])
+table(data_ord[D1_negative$index,1])
 table(data_ord[D1_positive$index,1])
-
-
-
-
-
-
 
 
 #MDS
@@ -96,11 +90,12 @@ distances <- dist(data_ord) #using euclidean distance, does not matter which dis
 
 library(smacof)
 mds_results <- smacof::mds(delta = distances, ndim = 2, type = "ordinal",verbose = TRUE)
+final <- as.data.frame(mds_results$conf)
 final <- add_vars(final,data)
 ###########
 final %>% 
   filter(age < 100,hand != '0') %>%
-  ggplot(aes(x=D1,y=D2)) + coord_cartesian(xlim = c(-2.1, 3), ylim = c(-3.2,3.2)) + geom_point() #tuto staci pomenit parametre... data su nachystane
+  ggplot(aes(x=D1,y=D2,size = age, color = engnat)) + coord_cartesian(xlim = c(-2.1, 3), ylim = c(-3.2,3.2)) + geom_point() #tuto staci pomenit parametre... data su nachystane
 
 final %>% 
   filter(age > 30,hand != '0') %>%
